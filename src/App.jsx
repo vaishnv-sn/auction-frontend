@@ -5,6 +5,7 @@ import './App.css';
 import Signup from './components/Auth/Signup';
 import Login from './components/Auth/Login';
 import Navbar from './components/NavBar/NavBar';
+import MainPage from './Pages/MainPage';
 
 
 function App() {
@@ -13,8 +14,7 @@ function App() {
   // Load user from localStorage token at start (optional)
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      // You may want to decode the token or fetch user info here
+    if (token) {      
       const storedUser = JSON.parse(localStorage.getItem('user'));
       if (storedUser) setUser(storedUser);
     }

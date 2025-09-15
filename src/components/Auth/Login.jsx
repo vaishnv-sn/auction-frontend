@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
       // Adjust URL to match your backend
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+      const res = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
 
       if (res.ok && data.token) {
-        // Save token, notify parent, redirect, etc.
-        localStorage.setItem('token', data.token);
-        onLogin(data.user); // Send user info to parent/context
+        localStorage.setItem("token", data.token);
+        onLogin(data.user);
       } else {
-        setError(data.message || 'Login failed');
+        setError(data.message || "Login failed");
       }
     } catch (err) {
-      setError('Server error');
+      setError("Server error");
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '2rem auto' }}>
+    <div style={{ maxWidth: 400, margin: "2rem auto" }}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -40,7 +40,7 @@ const Login = ({ onLogin }) => {
             type="email"
             value={email}
             autoComplete="username"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -50,12 +50,23 @@ const Login = ({ onLogin }) => {
             type="password"
             value={password}
             autoComplete="current-password"
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
-        <button type="submit" style={{ marginTop: 14 }}>Login</button>
+        {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
+        <button type="submit" style={{ marginTop: 14 }}>
+          Login
+        </button>
+        <p>
+          Don't have an account?{" "}
+          <Link
+            to="/signup"
+            style={{ color: "blue", textDecoration: "underline" }}
+          >
+            Signup here
+          </Link>
+        </p>
       </form>
     </div>
   );
